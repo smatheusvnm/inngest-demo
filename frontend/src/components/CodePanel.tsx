@@ -1,6 +1,6 @@
 import { FileCode2 } from "lucide-react";
 import { Highlight, themes } from "prism-react-renderer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSource, type Source } from "../api";
 
 /** Line numbers (0-based) inside every @inngest_client.create_function(...) block. */
@@ -26,10 +26,18 @@ export function CodePanel({ module }: { module: string }) {
       .catch((err) => setError(err.message));
   }, [module]);
 
+  const scroller = useRef<HTMLDivElement>(null);
   const highlighted = source ? decoratorLines(source.code) : new Set<number>();
 
+  // Scroll the panel (not the page) so the first function config is in view.
+  useEffect(() => {
+    const el = scroller.current;
+    const first = el?.querySelector<HTMLElement>("[data-config]");
+    if (el && first) el.scrollTop = Math.max(first.offsetTop - 2 * first.offsetHeight, 0);
+  }, [source]);
+
   return (
-    <section className="flex max-h-[32rem] min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-zinc-800 bg-[#011627] lg:max-h-none">
+    <section className="order-3 flex max-h-[32rem] min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-zinc-800 bg-[#011627] lg:max-h-none">
       <div className="flex items-center gap-2 border-b border-zinc-800 bg-zinc-900/60 px-4 py-2.5 text-sm">
         <FileCode2 className="size-4 text-zinc-400" />
         <code className="truncate font-mono text-zinc-300">
@@ -40,7 +48,7 @@ export function CodePanel({ module }: { module: string }) {
         </span>
       </div>
 
-      <div className="flex-1 overflow-auto">
+      <div ref={scroller} className="relative flex-1 overflow-auto">
         {error && <p className="p-4 text-sm text-rose-400">{error}</p>}
         {source && (
           <Highlight code={source.code.trimEnd()} language="python" theme={themes.nightOwl}>
@@ -53,6 +61,7 @@ export function CodePanel({ module }: { module: string }) {
                     <div
                       key={i}
                       {...rest}
+                      data-config={isConfig || undefined}
                       className={`${className} flex border-l-2 pr-4 ${
                         isConfig ? "border-indigo-400 bg-indigo-400/10" : "border-transparent"
                       }`}

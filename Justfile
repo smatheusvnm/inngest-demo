@@ -19,19 +19,21 @@ dev_ui_url := "https://inngest.localhost" + port_suffix
 default:
     @just --list --unsorted
 
-# Check required tools and install Python deps locally (for tests, lint and your editor)
+# Check required tools and install Python + UI deps locally (for tests, lint and your editor)
 setup:
     @command -v docker >/dev/null || (echo "docker not found: install Docker Desktop" && exit 1)
     @command -v uv >/dev/null || (echo "uv not found: brew install uv" && exit 1)
+    @command -v npm >/dev/null || (echo "npm not found: brew install node" && exit 1)
     uv sync
+    npm --prefix frontend install
     @echo "Ready. Next: just up"
 
-# Build and start app + Inngest dev server + Caddy in the background
+# Build (UI included) and start app + Inngest dev server + Caddy in the background
 up: _check-ports
     docker compose up -d --build
     @echo ""
-    @echo "  App (buttons + live log): {{ app_url }}"
-    @echo "  Inngest Dev UI:           {{ dev_ui_url }}   (fallback: http://localhost:{{ INNGEST_PORT }})"
+    @echo "  Demo app:       {{ app_url }}"
+    @echo "  Inngest Dev UI: {{ dev_ui_url }}   (fallback: http://localhost:{{ INNGEST_PORT }})"
     @echo ""
     @echo "  First time? Run 'just trust' to remove the browser HTTPS warning."
 
@@ -69,6 +71,14 @@ send event data="{}" count="1":
         -d '{"name": "{{ event }}", "data": {{ data }}, "count": {{ count }}}'
     @echo ""
 
+# Run the UI with hot reload on http://localhost:5173 (needs `just up` running for the API)
+dev-ui:
+    VITE_API_TARGET={{ app_url }} VITE_DEV_UI_URL={{ dev_ui_url }} npm --prefix frontend run dev
+
+# Build the UI into frontend/dist (only needed to run the app outside Docker)
+build-ui:
+    npm --prefix frontend run build
+
 # Run the test suite
 test:
     uv run pytest -v
@@ -77,6 +87,7 @@ test:
 lint:
     uv run ruff check .
     uv run ruff format --check .
+    npm --prefix frontend run typecheck
 
 # Format code and apply safe lint fixes
 fmt:

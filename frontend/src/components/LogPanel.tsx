@@ -42,7 +42,7 @@ export function LogPanel({ scenario, log }: { scenario: Scenario; log: LogEntry[
   };
 
   return (
-    <section className="flex h-[26rem] min-h-0 flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/60 lg:h-auto">
+    <section className="order-2 flex h-[24rem] min-h-0 flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/60 lg:order-none lg:h-auto">
       <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-2.5">
         <h2 className="flex items-center gap-2 text-sm font-semibold">
           <span className="relative flex size-2">

@@ -76,9 +76,11 @@ export function ScenarioView({ index, log }: Props) {
       </header>
 
       {/* Body: stacked on small screens, two columns that fit the viewport on lg+ */}
-      <main className="grid flex-1 gap-4 p-3 sm:p-5 lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_minmax(340px,40%)] lg:grid-rows-1">
-        <div className="flex min-h-0 flex-col gap-4">
-          <section className="shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4 sm:p-5 lg:max-h-[60%] lg:overflow-y-auto">
+      {/* Small screens: Try it, Log, Code (the left column uses `contents` so its
+          children join the grid and can be reordered). lg+: two columns, no page scroll. */}
+      <main className="grid flex-1 grid-cols-[minmax(0,1fr)] content-start gap-4 p-3 sm:p-5 lg:min-h-0 lg:grid-cols-[minmax(0,1fr)_minmax(340px,40%)] lg:grid-rows-1 lg:content-stretch">
+        <div className="contents lg:flex lg:min-h-0 lg:min-w-0 lg:flex-col lg:gap-4">
+          <section className="order-1 shrink-0 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4 sm:p-5 lg:max-h-[60%] lg:overflow-y-auto">
             <p className="text-base leading-relaxed text-zinc-300">{scenario.description}</p>
             <p className="mt-3 flex gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2 text-sm text-amber-200/90">
               <Eye className="mt-0.5 size-4 shrink-0" />
