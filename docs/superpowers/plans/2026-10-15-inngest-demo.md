@@ -494,7 +494,9 @@ async def risky_task(ctx: inngest.Context) -> None:
     task_id = ctx.event.data.get("task_id")
 
     async def call_flaky_service() -> None:
-        activity.log(FN, f"Attempt {ctx.attempt + 1}: calling flaky service ({task_id})", ctx.run_id)
+        activity.log(
+            FN, f"Attempt {ctx.attempt + 1}: calling flaky service ({task_id})", ctx.run_id
+        )
         raise RuntimeError("Flaky service exploded")
 
     await ctx.step.run("call-flaky-service", call_flaky_service)
@@ -557,9 +559,7 @@ FN = "send-notification"
     fn_id=FN,
     trigger=inngest.TriggerEvent(event="demo/notification.send"),
     # At most 1 run per user every 10s. Compare with throttle, which queues instead.
-    rate_limit=inngest.RateLimit(
-        key="event.data.user_id", limit=1, period=timedelta(seconds=10)
-    ),
+    rate_limit=inngest.RateLimit(key="event.data.user_id", limit=1, period=timedelta(seconds=10)),
 )
 async def send_notification(ctx: inngest.Context) -> str:
     label = f"#{ctx.event.data.get('seq', 1)} to {ctx.event.data.get('user_id')}"
