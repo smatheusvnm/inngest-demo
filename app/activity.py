@@ -8,7 +8,9 @@ import time
 from collections import deque
 
 _entries: deque[dict] = deque(maxlen=500)
-_ids = itertools.count(1)
+# Start ids at the current time in ms so they keep growing across hot reloads,
+# and the UI (which polls with the last id it saw) never misses new entries.
+_ids = itertools.count(int(time.time() * 1000))
 _shipping_broken = False
 
 
