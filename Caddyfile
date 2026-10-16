@@ -1,0 +1,11 @@
+# Caddy signs these with its own local CA. Run `just trust` once to trust it.
+
+app.localhost {
+	tls internal
+	reverse_proxy app:8000
+}
+
+inngest.localhost {
+	tls internal
+	reverse_proxy inngest:8288
+}
