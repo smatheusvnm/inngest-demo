@@ -24,3 +24,5 @@ select = ["E", "F", "I", "UP", "B"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]
+# Silence deprecation noise from third-party packages (inngest, starlette).
+filterwarnings = ["ignore::DeprecationWarning"]
