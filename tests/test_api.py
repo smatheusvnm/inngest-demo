@@ -68,6 +68,20 @@ def test_shipping_toggle_endpoints(client):
     assert client.get("/api/toggles/shipping-broken").json() == {"enabled": True}
 
 
+def test_source_returns_function_module(client):
+    resp = client.get("/api/source/concurrency")
+
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["path"] == "app/functions/concurrency.py"
+    assert "Concurrency(limit=2)" in body["code"]
+
+
+@pytest.mark.parametrize("module", ["nope", "__init__", "..%2Fmain"])
+def test_source_rejects_unknown_modules(client, module):
+    assert client.get(f"/api/source/{module}").status_code == 404
+
+
 def test_index_served(client):
     resp = client.get("/")
     assert resp.status_code == 200

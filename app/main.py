@@ -7,7 +7,8 @@ import httpx
 import inngest
 import inngest.fast_api
 from fastapi import FastAPI, HTTPException, Response
-from fastapi.responses import FileResponse
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from app import activity
@@ -15,7 +16,12 @@ from app.client import inngest_client
 from app.functions import ALL_FUNCTIONS
 
 INNGEST_BASE_URL = os.getenv("INNGEST_BASE_URL", "http://localhost:8288")
-INDEX_HTML = Path(__file__).parent / "static" / "index.html"
+ROOT_DIR = Path(__file__).parent.parent
+FUNCTIONS_DIR = Path(__file__).parent / "functions"
+FRONTEND_DIST = ROOT_DIR / "frontend" / "dist"
+
+# Only files that really are function modules can be read through /api/source.
+SOURCE_MODULES = {p.stem for p in FUNCTIONS_DIR.glob("*.py") if p.stem != "__init__"}
 
 app = FastAPI(title="Inngest Demo")
 
@@ -28,11 +34,6 @@ class SendEventsRequest(BaseModel):
 
 class Toggle(BaseModel):
     enabled: bool
-
-
-@app.get("/", include_in_schema=False)
-async def index() -> FileResponse:
-    return FileResponse(INDEX_HTML)
 
 
 @app.post("/api/events")
@@ -86,5 +87,29 @@ async def set_shipping_toggle(body: Toggle) -> Toggle:
     return body
 
 
+@app.get("/api/source/{module}")
+async def function_source(module: str) -> dict:
+    """Source code of one app/functions module, shown in the UI's Code panel."""
+    if module not in SOURCE_MODULES:
+        raise HTTPException(status_code=404, detail=f"Unknown module: {module}")
+    return {
+        "module": module,
+        "path": f"app/functions/{module}.py",
+        "code": (FUNCTIONS_DIR / f"{module}.py").read_text(),
+    }
+
+
 # Exposes every function at /api/inngest for the Inngest dev server.
 inngest.fast_api.serve(app, inngest_client, ALL_FUNCTIONS)
+
+# The React UI (frontend/dist). Mounted last so it never shadows the API routes.
+if FRONTEND_DIST.is_dir():
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="ui")
+else:
+
+    @app.get("/", include_in_schema=False)
+    async def ui_not_built() -> HTMLResponse:
+        return HTMLResponse(
+            "<h1>Inngest Demo</h1><p>The UI is not built yet. Run <code>just build-ui</code>"
+            " (or <code>just up</code>, which builds it inside Docker).</p>"
+        )

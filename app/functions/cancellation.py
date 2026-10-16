@@ -42,6 +42,7 @@ async def send_reminder(ctx: inngest.Context) -> str:
 )
 async def log_cancelled_runs(ctx: inngest.Context) -> None:
     """System event: Inngest emits it whenever a run is cancelled (event or timeout)."""
-    function_id = ctx.event.data.get("function_id")
+    # function_id is "<app-id>-<fn-id>"; log under the plain fn id so the UI groups it.
+    function_id = ctx.event.data.get("function_id", "").removeprefix("inngest-demo-")
     run_id = ctx.event.data.get("run_id")
-    activity.log("inngest/function.cancelled", f"Run of {function_id} was cancelled", run_id)
+    activity.log(function_id, "Run cancelled (inngest/function.cancelled)", run_id)
