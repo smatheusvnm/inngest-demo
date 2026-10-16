@@ -75,12 +75,12 @@ inngest-demo/
 ### Caddyfile
 
 ```
-app.inngest-demo.localhost {
+app.localhost {
     tls internal
     reverse_proxy app:8000
 }
 
-inngest.inngest-demo.localhost {
+inngest.localhost {
     tls internal
     reverse_proxy inngest:8288
 }
@@ -193,7 +193,7 @@ A single file with plain HTML, CSS and JS. No framework, no build.
   - Cancellation: Schedule and Cancel buttons sharing a generated
     `reminder_id`.
 - Errors from the API show in a small toast.
-- Dev UI link: `https://inngest.inngest-demo.localhost`.
+- Dev UI link: `https://inngest.localhost`.
 
 ## Testing and verification
 
