@@ -147,7 +147,8 @@
     // ---------- cards ----------
 
     function renderCard(scenario) {
-      const textarea = el("textarea", { value: JSON.stringify(scenario.data, null, 2), rows: 3 });
+      const json = JSON.stringify(scenario.data, null, 2);
+      const textarea = el("textarea", { value: json, rows: json.split("\n").length });
       const output = el("pre", { className: "output", hidden: true });
       const buttons = el("div", { className: "buttons" });
 
