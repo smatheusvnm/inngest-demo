@@ -4,3 +4,4 @@ __pycache__/
 .ruff_cache/
 .caddy-root.crt
 .DS_Store
+.env
