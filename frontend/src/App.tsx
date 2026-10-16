@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ScenarioGrid } from "./components/ScenarioGrid";
 import { ScenarioView } from "./components/ScenarioView";
+import { Deck } from "./deck/Deck";
 import { useActivityLog } from "./hooks/useActivityLog";
 import { readRoute } from "./router";
 import { SCENARIOS } from "./scenarios";
@@ -16,16 +17,20 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
-  const index = SCENARIOS.findIndex((s) => s.id === route);
+  let screen;
+  if (route.page === "intro") {
+    screen = <Deck slide={route.slide} step={route.step} />;
+  } else if (route.page === "features") {
+    screen = <ScenarioGrid />;
+  } else {
+    const index = SCENARIOS.findIndex((s) => s.id === route.id);
+    // key: remount per scenario so editors and log cutoff start fresh.
+    screen = <ScenarioView key={route.id} index={index} log={log} />;
+  }
 
   return (
     <>
-      {index === -1 ? (
-        <ScenarioGrid />
-      ) : (
-        // key: remount per scenario so editors and log cutoff start fresh.
-        <ScenarioView key={route} index={index} log={log} />
-      )}
+      {screen}
       <Toaster />
     </>
   );

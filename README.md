@@ -61,13 +61,24 @@ app/
 └── functions/        # one file per feature, shown in the UI's Code panel
 frontend/             # React UI (Vite + TypeScript + Tailwind)
 └── src/
+    ├── deck/         # intro slides (Deck, Stage, slides/*)
     ├── scenarios.ts  # the 14 scenarios: texts, events, buttons
     └── components/   # grid, focused view, controls, log, code
 ```
 
 ## Presenting
 
-- The home screen shows only the feature titles. Click one to focus on it.
+The app opens with a short **intro deck** (5 slides): events come from anywhere →
+Inngest routes them to functions → a function is a list of durable steps → the code.
+
+- `→`, `Space`, `PageDown` or a presentation clicker advance one animation step;
+  `←` / `PageUp` go back. `Esc` (or **Skip to demo**) jumps to the feature grid.
+- The position is in the URL (`#/intro/<slide>/<step>`), so a reload keeps your place.
+- Slides render on a fixed 16:9 canvas scaled to the window: same layout on any screen.
+
+After the last slide, **Let's see it live** opens the feature grid (`#/features`):
+
+- The grid shows only the feature titles. Click one to focus on it. **Intro** goes back to the deck.
 - In a feature: `←` / `→` go to the previous / next feature, `Esc` goes back home.
 - The live log only shows that feature's functions, starting from when you opened it.
   **Clear** starts it over.
