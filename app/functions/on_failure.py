@@ -33,6 +33,8 @@ async def risky_task(ctx: inngest.Context) -> None:
         activity.log(
             FN, f"Attempt {ctx.attempt + 1}: calling flaky service ({task_id})", ctx.run_id
         )
-        raise RuntimeError("Flaky service exploded")
+        # Any exception fails the step. RetryAfterError only shortens the wait before
+        # the retry (3s instead of the default backoff) so the demo stays quick.
+        raise inngest.RetryAfterError("Flaky service exploded", 3000)
 
     await ctx.step.run("call-flaky-service", call_flaky_service)
