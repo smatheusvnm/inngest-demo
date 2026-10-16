@@ -30,7 +30,6 @@ inngest-demo/
 ├── compose.yaml
 ├── Caddyfile
 ├── Dockerfile
-├── .env.example
 ├── .gitignore
 ├── .python-version
 ├── pyproject.toml
@@ -102,7 +101,7 @@ default recipe lists all recipes.
 | Recipe | What it does |
 |---|---|
 | `just` | List recipes |
-| `just setup` | Check `docker`/`uv`, create `.env` from `.env.example`, `uv sync` |
+| `just setup` | Check `docker`/`uv`, `uv sync` |
 | `just up` | Build and start the stack in the background, print URLs |
 | `just down` | Stop the stack |
 | `just restart` | Restart the stack |
