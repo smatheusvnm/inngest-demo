@@ -61,19 +61,26 @@ app/
 └── functions/        # one file per feature, shown in the UI's Code panel
 frontend/             # React UI (Vite + TypeScript + Tailwind)
 └── src/
-    ├── deck/         # intro slides (Deck, Stage, slides/*)
+    ├── deck/         # decks: picker, Deck, Stage, intro slides/*, debug/*
     ├── scenarios.ts  # the 14 scenarios: texts, events, buttons
     └── components/   # grid, focused view, controls, log, code
 ```
 
 ## Presenting
 
-The app opens with a short **intro deck** (5 slides): events come from anywhere →
-Inngest routes them to functions → a function is a list of durable steps → the code.
+The app opens with a deck picker (`#/`). There are two decks:
+
+- **Why Inngest** (`#/intro`, 5 slides): events come from anywhere → Inngest routes them
+  to functions → a function is a list of durable steps → the code. It ends in the feature grid.
+- **When a run goes wrong** (`#/debug`, 8 slides, about 10 minutes): how a sync run
+  executes, how failures, retries, aborts and deferrals look, and how to follow one run id
+  through the database, Inngest, the Inngest MCP and Sentry. It ends back at the picker.
+
+In a deck:
 
 - `→`, `Space`, `PageDown` or a presentation clicker advance one animation step;
-  `←` / `PageUp` go back. `Esc` (or **Skip to demo**) jumps to the feature grid.
-- The position is in the URL (`#/intro/<slide>/<step>`), so a reload keeps your place.
+  `←` / `PageUp` go back. `Esc` (or the footer button) leaves the deck.
+- The position is in the URL (`#/<deck>/<slide>/<step>`), so a reload keeps your place.
 - Slides render on a fixed 16:9 canvas scaled to the window: same layout on any screen.
 
 After the last slide, **Let's see it live** opens the feature grid (`#/features`):

@@ -19,7 +19,7 @@ export function ScenarioGrid() {
         </div>
         <div className="flex gap-2 self-start sm:self-auto">
           <a
-            href="#/"
+            href="#/intro"
             className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-200 transition hover:border-zinc-700 hover:bg-zinc-800"
           >
             <Presentation className="size-4" /> Intro

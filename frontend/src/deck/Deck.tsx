@@ -1,40 +1,50 @@
 import { ChevronLeft, ChevronRight, FastForward } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect } from "react";
-import { navigate, navigateIntro } from "../router";
-import { SLIDES } from "./slides";
+import { go, navigateDeck } from "../router";
+import type { DeckDefinition } from "./decks";
 import { Stage } from "./Stage";
 
 const NEXT_KEYS = new Set(["ArrowRight", " ", "PageDown", "Enter"]);
 const PREV_KEYS = new Set(["ArrowLeft", "PageUp"]);
 
-export function Deck({ slide: rawSlide, step: rawStep }: { slide: number; step: number }) {
-  const slide = Math.min(rawSlide, SLIDES.length - 1);
-  const step = Math.min(rawStep, SLIDES[slide].steps - 1);
-  const current = SLIDES[slide];
+export function Deck({
+  deck,
+  slide: rawSlide,
+  step: rawStep,
+}: {
+  deck: DeckDefinition;
+  slide: number;
+  step: number;
+}) {
+  const slides = deck.slides;
+  const leave = useCallback(() => go(deck.exit.hash), [deck.exit.hash]);
+  const slide = Math.min(rawSlide, slides.length - 1);
+  const step = Math.min(rawStep, slides[slide].steps - 1);
+  const current = slides[slide];
 
   const next = useCallback(() => {
-    if (step < current.steps - 1) navigateIntro(slide, step + 1);
-    else if (slide < SLIDES.length - 1) navigateIntro(slide + 1, 0);
-    else navigate(null); // end of the intro: on to the live demo
-  }, [slide, step, current.steps]);
+    if (step < current.steps - 1) navigateDeck(deck.id, slide, step + 1);
+    else if (slide < slides.length - 1) navigateDeck(deck.id, slide + 1, 0);
+    else leave();
+  }, [deck.id, slides.length, slide, step, current.steps, leave]);
 
   const prev = useCallback(() => {
-    if (step > 0) navigateIntro(slide, step - 1);
-    else if (slide > 0) navigateIntro(slide - 1, SLIDES[slide - 1].steps - 1);
-  }, [slide, step]);
+    if (step > 0) navigateDeck(deck.id, slide, step - 1);
+    else if (slide > 0) navigateDeck(deck.id, slide - 1, slides[slide - 1].steps - 1);
+  }, [deck.id, slides, slide, step]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       if (NEXT_KEYS.has(e.key)) next();
       else if (PREV_KEYS.has(e.key)) prev();
-      else if (e.key === "Escape") navigate(null);
+      else if (e.key === "Escape") leave();
       else return;
       e.preventDefault();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [next, prev]);
+  }, [next, prev, leave]);
 
   // The stage is a fixed 1280×720 canvas, so pin rem to 16px while the deck is
   // shown (the rest of the app scales rem with the viewport).
@@ -69,12 +79,12 @@ export function Deck({ slide: rawSlide, step: rawStep }: { slide: number; step: 
         </div>
 
         <ol className="flex items-center gap-2">
-          {SLIDES.map((s, i) => (
+          {slides.map((s, i) => (
             <li key={s.title}>
               <button
                 title={s.title}
                 aria-label={s.title}
-                onClick={() => navigateIntro(i, 0)}
+                onClick={() => navigateDeck(deck.id, i, 0)}
                 className={`block h-1.5 rounded-full transition-all ${
                   i === slide ? "w-8 bg-violet-400" : i < slide ? "w-4 bg-zinc-500" : "w-4 bg-zinc-700"
                 }`}
@@ -84,14 +94,14 @@ export function Deck({ slide: rawSlide, step: rawStep }: { slide: number; step: 
         </ol>
 
         <span className="hidden font-mono text-xs sm:inline">
-          {slide + 1}/{SLIDES.length} · step {step + 1}/{current.steps}
+          {slide + 1}/{slides.length} · step {step + 1}/{current.steps}
         </span>
 
         <button
-          onClick={() => navigate(null)}
+          onClick={leave}
           className="ml-auto inline-flex items-center gap-1.5 rounded-md px-2 py-1 transition hover:bg-zinc-800 hover:text-zinc-200"
         >
-          Skip to demo <FastForward className="size-4" />
+          {deck.exit.label} <FastForward className="size-4" />
         </button>
       </footer>
     </div>

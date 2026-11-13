@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { ScenarioGrid } from "./components/ScenarioGrid";
 import { ScenarioView } from "./components/ScenarioView";
 import { Deck } from "./deck/Deck";
+import { DeckPicker } from "./deck/DeckPicker";
+import { DECKS } from "./deck/decks";
 import { useActivityLog } from "./hooks/useActivityLog";
 import { readRoute } from "./router";
 import { SCENARIOS } from "./scenarios";
@@ -18,8 +20,11 @@ export default function App() {
   }, []);
 
   let screen;
-  if (route.page === "intro") {
-    screen = <Deck slide={route.slide} step={route.step} />;
+  if (route.page === "decks") {
+    screen = <DeckPicker />;
+  } else if (route.page === "deck") {
+    const deck = DECKS.find((d) => d.id === route.deckId)!;
+    screen = <Deck key={deck.id} deck={deck} slide={route.slide} step={route.step} />;
   } else if (route.page === "features") {
     screen = <ScenarioGrid />;
   } else {
