@@ -11,8 +11,8 @@ export function DebugTitleSlide() {
       </p>
 
       <p className="absolute bottom-14 left-24 right-24 text-xl text-zinc-400">
-        <span className="text-zinc-200">The case:</span> Jane moved to a new division. Now her Google mailbox turns off,
-        then on again. Every run is green. Why?
+        <span className="text-zinc-200">The case:</span> Jane works in two divisions. Support merged her profiles. Now
+        she has two Google mailboxes, and no run sees the second one. Why?
       </p>
     </div>
   );

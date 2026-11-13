@@ -1,7 +1,7 @@
 import { TriangleAlert } from "lucide-react";
 import type { ReactNode } from "react";
 import { Reveal, SlideTitle } from "../ui";
-import { Card, FUNCTION_ID, RUN_ID } from "./parts";
+import { Card, EVENT_NAME, FUNCTION_ID, RUN_ID } from "./parts";
 
 interface Exchange {
   prompt: string;
@@ -11,29 +11,29 @@ interface Exchange {
 
 const EXCHANGES: Exchange[] = [
   {
-    prompt: `Jane's mailbox keeps turning off. List the ${FUNCTION_ID} runs for users 1234 and 5678 this week.`,
-    tool: "list_function_runs",
+    prompt: `${RUN_ID} is the last_workflow_run_id of an orphan IntegrationAccount. Who was it for?`,
+    tool: "get_run",
     answer: (
       <>
-        6 runs, <span className="text-emerald-300">all Completed</span>. They alternate: 1234 suspends google-workspace,
-        5678 enables it.
+        Event {EVENT_NAME}: <span className="text-zinc-100">user_id 5678</span> (Jane, West profile),
+        triggered_by_id 42.
       </>
     ),
   },
   {
-    prompt: `Show the trace of the last run for 5678 (${RUN_ID}).`,
+    prompt: "Show its trace.",
     tool: "get_run_trace",
     answer: (
       <>
-        google-workspace: SUSPENDED → ACTIVE. Every step green. The row stores <span className="text-amber-300">external_id
-        1029…</span>, the same id as the row of 1234.
+        google-workspace-provision: ABSENT → ACTIVE for <span className="text-amber-300">jane.doe1@…</span>. That
+        is the second mailbox.
       </>
     ),
   },
   {
-    prompt: "What triggered the run before it, for 1234?",
-    tool: "get_run",
-    answer: "Event hge/integrations/lifecycle.changed, sent when the East profile was set inactive.",
+    prompt: `List the ${FUNCTION_ID} runs for user 5678 since the merge.`,
+    tool: "list_function_runs",
+    answer: "All green. They act on owner A and jane.doe@ only. No run touches jane.doe1@.",
   },
 ];
 

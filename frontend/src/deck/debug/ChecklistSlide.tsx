@@ -14,7 +14,7 @@ const ITEMS: ReactNode[] = [
     Search Sentry for <Code>inngest.run.id:&lt;id&gt;</Code>: stack trace and logs.
   </>,
   <>
-    All green but wrong? Look for a second owner: the same <Code>external_id</Code> on two rows.
+    All green but wrong? Look for orphan rows: an <Code>owner_id</Code> with no UserAssociations.
   </>,
   "Fix the data first. Then resync, and know what the run calls again.",
 ];
