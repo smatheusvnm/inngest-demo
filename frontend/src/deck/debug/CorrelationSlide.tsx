@@ -61,7 +61,7 @@ const PLACES: Place[] = [
 export function CorrelationSlide({ step }: { step: number }) {
   return (
     <>
-      <SlideTitle kicker="7 · Correlate">Follow the run id</SlideTitle>
+      <SlideTitle kicker="6 · Correlate">Follow the run id</SlideTitle>
 
       <div className="absolute inset-x-20 top-[166px] flex flex-col">
         {PLACES.map((place, index) => (

@@ -5,7 +5,6 @@ import { DebugTitleSlide } from "./debug/DebugTitleSlide";
 import { DuplicateProfileSlide } from "./debug/DuplicateProfileSlide";
 import { FailureSlide } from "./debug/FailureSlide";
 import { FlowSlide } from "./debug/FlowSlide";
-import { ManualAccountSlide } from "./debug/ManualAccountSlide";
 import { McpSlide } from "./debug/McpSlide";
 import { OutcomesSlide } from "./debug/OutcomesSlide";
 import { PersonModelSlide } from "./debug/PersonModelSlide";
@@ -47,7 +46,7 @@ export const DECKS: DeckDefinition[] = [
   {
     id: "debug",
     title: "When a run goes wrong",
-    summary: "How the HGE integration reconciler runs, two real failure cases, and how to debug them with the Inngest MCP and Sentry.",
+    summary: "How the HGE integration reconciler runs, a real failure case, and how to debug them with the Inngest MCP and Sentry.",
     exit: { label: "All decks", hash: "/" },
     slides: [
       { title: "When a run goes wrong", steps: 1, component: DebugTitleSlide },
@@ -55,7 +54,6 @@ export const DECKS: DeckDefinition[] = [
       { title: "From a click to an account", steps: 5, component: FlowSlide },
       { title: "Waves, and one failure", steps: 5, component: FailureSlide },
       { title: "Not every stop is a failure", steps: 5, component: OutcomesSlide },
-      { title: "The account already exists", steps: 5, component: ManualAccountSlide },
       { title: "One person, two owners", steps: 6, component: DuplicateProfileSlide },
       { title: "Follow the run id", steps: 5, component: CorrelationSlide },
       { title: "Ask the Inngest MCP", steps: 4, component: McpSlide },

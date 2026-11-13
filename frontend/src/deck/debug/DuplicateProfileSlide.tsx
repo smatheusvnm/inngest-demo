@@ -69,7 +69,7 @@ export function DuplicateProfileSlide({ step }: { step: number }) {
 
   return (
     <>
-      <SlideTitle kicker="6 · Case: repeated profile">One person, two owners</SlideTitle>
+      <SlideTitle kicker="5 · Case: repeated profile">One person, two owners</SlideTitle>
 
       <Owner
         className="left-20"

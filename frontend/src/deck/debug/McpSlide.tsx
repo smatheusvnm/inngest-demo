@@ -40,7 +40,7 @@ const EXCHANGES: Exchange[] = [
 export function McpSlide({ step }: { step: number }) {
   return (
     <>
-      <SlideTitle kicker="8 · Inngest MCP">Ask the Inngest MCP</SlideTitle>
+      <SlideTitle kicker="7 · Inngest MCP">Ask the Inngest MCP</SlideTitle>
 
       <Card className="absolute left-20 right-20 top-[180px] !bg-zinc-950 font-mono text-lg">
         <div className="space-y-5">
