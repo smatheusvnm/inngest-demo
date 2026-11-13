@@ -4,9 +4,7 @@ import { CorrelationSlide } from "./debug/CorrelationSlide";
 import { DebugTitleSlide } from "./debug/DebugTitleSlide";
 import { FailureSlide } from "./debug/FailureSlide";
 import { FlowSlide } from "./debug/FlowSlide";
-import { McpSlide } from "./debug/McpSlide";
 import { OrphanedAccountSlide } from "./debug/OrphanedAccountSlide";
-import { OutcomesSlide } from "./debug/OutcomesSlide";
 import { PersonModelSlide } from "./debug/PersonModelSlide";
 import { CodeSlide } from "./slides/CodeSlide";
 import { EventsSlide } from "./slides/EventsSlide";
@@ -53,10 +51,8 @@ export const DECKS: DeckDefinition[] = [
       { title: "One person, one owner", steps: 4, component: PersonModelSlide },
       { title: "From a click to an account", steps: 5, component: FlowSlide },
       { title: "Waves, and one failure", steps: 5, component: FailureSlide },
-      { title: "Not every stop is a failure", steps: 5, component: OutcomesSlide },
       { title: "One person, two mailboxes", steps: 6, component: OrphanedAccountSlide },
       { title: "Follow the run id", steps: 5, component: CorrelationSlide },
-      { title: "Ask the Inngest MCP", steps: 4, component: McpSlide },
       { title: "Checklist", steps: 1, component: ChecklistSlide },
     ],
   },

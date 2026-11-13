@@ -56,7 +56,7 @@ export function OrphanedAccountSlide({ step }: { step: number }) {
 
   return (
     <>
-      <SlideTitle kicker="5 · Case: merged profiles">One person, two mailboxes</SlideTitle>
+      <SlideTitle kicker="4 · Case: merged profiles">One person, two mailboxes</SlideTitle>
 
       <svg className="absolute inset-0" width="1280" height="720">
         <Edge from={[right(ACCOUNT), middle(LANE_A)]} to={[OWNER.left, middle(LANE_A)]} tone="violet" label="user_profiles" />

@@ -72,8 +72,8 @@ The app opens with a deck picker (`#/`). There are two decks:
 
 - **Why Inngest** (`#/intro`, 5 slides): events come from anywhere → Inngest routes them
   to functions → a function is a list of durable steps → the code. It ends in the feature grid.
-- **When a run goes wrong** (`#/debug`, 9 slides, about 10 minutes): how the HGE
-  integration reconciler runs (owner model, flow, waves, outcomes), a real failure case
+- **When a run goes wrong** (`#/debug`, 7 slides, about 10 minutes): how the HGE
+  integration reconciler runs (owner model, flow, waves), a real failure case
   (merged profiles leave an orphan IntegrationAccount and a second mailbox), and how to follow one run id through IntegrationAccount, Inngest,
   the Inngest MCP and Sentry. It ends back at the picker.
 
