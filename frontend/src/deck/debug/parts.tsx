@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 
-export const FUNCTION_ID = "sync-user-accounts";
-export const EVENT_NAME = "user/lifecycle.changed";
+export const FUNCTION_ID = "reconcile-user-accounts";
+export const EVENT_NAME = "hge/integrations/lifecycle.changed";
 export const RUN_ID = "01JD8Z…7Q";
+export const PERSON_EMAIL = "jane.doe@…";
 
 export type Tone = "neutral" | "violet" | "amber" | "emerald" | "rose" | "sky";
 

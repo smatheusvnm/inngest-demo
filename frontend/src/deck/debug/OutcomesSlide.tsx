@@ -1,13 +1,13 @@
 import { Ban, Clock, Hourglass, RotateCw } from "lucide-react";
 import type { ReactNode } from "react";
 import { Caption, Reveal, SlideTitle } from "../ui";
-import { Card, Code, Label, TEXT, type Tone } from "./parts";
+import { Card, Code, TEXT, type Tone } from "./parts";
 
 interface Outcome {
   icon: ReactNode;
   tone: Tone;
   name: string;
-  when: string;
+  example: ReactNode;
   result: ReactNode;
 }
 
@@ -16,17 +16,17 @@ const OUTCOMES: Outcome[] = [
     icon: <RotateCw className="size-6" />,
     tone: "amber",
     name: "Retry",
-    when: "Any unexpected exception: timeout, 500, bad response.",
-    result: "Inngest runs the step again. Still failing? It counts as a failure.",
+    example: "Google or HubSpot answers 500, or the call times out.",
+    result: "The step runs once more. Still failing: an isolated failure.",
   },
   {
     icon: <Ban className="size-6" />,
     tone: "rose",
     name: "Abort",
-    when: "A permanent condition: the row is gone, required data is missing.",
+    example: "SalesPro has the email, but Genius does not know the account.",
     result: (
       <>
-        Raised as <Code>NonRetriableError</Code>. No retry.
+        <Code>AbortAction</Code> → <Code>NonRetriableError</Code>. No retry. A human must act.
       </>
     ),
   },
@@ -34,10 +34,10 @@ const OUTCOMES: Outcome[] = [
     icon: <Hourglass className="size-6" />,
     tone: "sky",
     name: "Defer",
-    when: "Not ready yet: the vendor still needs time.",
+    example: "HubSpot and RingCentral wait for a new Google mailbox. SalesPro hits its rate limit.",
     result: (
       <>
-        The run ends <span className="text-emerald-300">green</span>. One wake-up event syncs the user again later.
+        The run ends <span className="text-emerald-300">green</span>. A wake-up event reconciles the user later.
       </>
     ),
   },
@@ -45,28 +45,25 @@ const OUTCOMES: Outcome[] = [
     icon: <Clock className="size-6" />,
     tone: "violet",
     name: "Debounce",
-    when: "Not an outcome: nothing ran yet.",
-    result: "The run starts 5 min after the last event for that user.",
+    example: "“I changed the title and nothing happened.”",
+    result: "Nothing ran yet. The run starts 5 min after the last event for that user.",
   },
 ];
 
 export function OutcomesSlide({ step }: { step: number }) {
   return (
     <>
-      <SlideTitle kicker="3 · Outcomes">Not every stop is a failure</SlideTitle>
+      <SlideTitle kicker="4 · Outcomes">Not every stop is a failure</SlideTitle>
 
-      <div className="absolute inset-x-20 top-[190px] grid grid-cols-2 gap-5">
+      <div className="absolute inset-x-20 top-[180px] grid grid-cols-2 gap-5">
         {OUTCOMES.map((outcome, index) => (
           <Reveal key={outcome.name} show={step >= index}>
-            <Card tone={step === index ? outcome.tone : "neutral"} className="h-[180px]">
+            <Card tone={step === index ? outcome.tone : "neutral"} className="h-[188px]">
               <div className={`flex items-center gap-3 ${TEXT[outcome.tone]}`}>
                 {outcome.icon}
                 <span className="text-2xl font-semibold">{outcome.name}</span>
               </div>
-              <div className="mt-3">
-                <Label>when</Label>
-                <p className="mt-1 text-lg text-zinc-300">{outcome.when}</p>
-              </div>
+              <p className="mt-3 text-lg text-zinc-400">{outcome.example}</p>
               <p className="mt-2 text-lg text-zinc-100">{outcome.result}</p>
             </Card>
           </Reveal>

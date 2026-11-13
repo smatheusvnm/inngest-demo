@@ -11,35 +11,36 @@ interface Exchange {
 
 const EXCHANGES: Exchange[] = [
   {
-    prompt: `Which ${FUNCTION_ID} runs failed in the last 24 h?`,
+    prompt: `Jane's mailbox keeps turning off. List the ${FUNCTION_ID} runs for users 1234 and 5678 this week.`,
     tool: "list_function_runs",
     answer: (
       <>
-        3 failed runs. Newest: <span className="text-zinc-100">{RUN_ID}</span>, user 42, 10:14 UTC.
+        6 runs, <span className="text-emerald-300">all Completed</span>. They alternate: 1234 suspends google-workspace,
+        5678 enables it.
       </>
     ),
   },
   {
-    prompt: `Show the trace of ${RUN_ID}.`,
+    prompt: `Show the trace of the last run for 5678 (${RUN_ID}).`,
     tool: "get_run_trace",
     answer: (
       <>
-        <span className="text-rose-300">crm:provision failed</span> (409 Conflict: email already exists).
-        scheduler:provision skipped. email:provision ACTIVE.
+        google-workspace: SUSPENDED → ACTIVE. Every step green. The row stores <span className="text-amber-300">external_id
+        1029…</span>, the same id as the row of 1234.
       </>
     ),
   },
   {
-    prompt: "Why did crm:provision fail? Check the step input.",
+    prompt: "What triggered the run before it, for 1234?",
     tool: "get_run",
-    answer: "The CRM already has a contact with this email. The account row has no external id to link it.",
+    answer: "Event hge/integrations/lifecycle.changed, sent when the East profile was set inactive.",
   },
 ];
 
 export function McpSlide({ step }: { step: number }) {
   return (
     <>
-      <SlideTitle kicker="5 · Inngest MCP">Ask the Inngest MCP</SlideTitle>
+      <SlideTitle kicker="8 · Inngest MCP">Ask the Inngest MCP</SlideTitle>
 
       <Card className="absolute left-20 right-20 top-[180px] !bg-zinc-950 font-mono text-lg">
         <div className="space-y-5">

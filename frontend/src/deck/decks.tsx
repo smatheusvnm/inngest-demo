@@ -2,11 +2,13 @@ import type { ComponentType } from "react";
 import { ChecklistSlide } from "./debug/ChecklistSlide";
 import { CorrelationSlide } from "./debug/CorrelationSlide";
 import { DebugTitleSlide } from "./debug/DebugTitleSlide";
+import { DuplicateProfileSlide } from "./debug/DuplicateProfileSlide";
 import { FailureSlide } from "./debug/FailureSlide";
 import { FlowSlide } from "./debug/FlowSlide";
-import { GotchasSlide } from "./debug/GotchasSlide";
+import { ManualAccountSlide } from "./debug/ManualAccountSlide";
 import { McpSlide } from "./debug/McpSlide";
 import { OutcomesSlide } from "./debug/OutcomesSlide";
+import { PersonModelSlide } from "./debug/PersonModelSlide";
 import { CodeSlide } from "./slides/CodeSlide";
 import { EventsSlide } from "./slides/EventsSlide";
 import { RoutingSlide } from "./slides/RoutingSlide";
@@ -45,16 +47,18 @@ export const DECKS: DeckDefinition[] = [
   {
     id: "debug",
     title: "When a run goes wrong",
-    summary: "How a sync run executes, and how to debug it with the Inngest MCP and Sentry.",
+    summary: "How the HGE integration reconciler runs, two real failure cases, and how to debug them with the Inngest MCP and Sentry.",
     exit: { label: "All decks", hash: "/" },
     slides: [
       { title: "When a run goes wrong", steps: 1, component: DebugTitleSlide },
-      { title: "The flow", steps: 5, component: FlowSlide },
-      { title: "One failure, isolated", steps: 5, component: FailureSlide },
+      { title: "One person, one owner", steps: 4, component: PersonModelSlide },
+      { title: "From a click to an account", steps: 5, component: FlowSlide },
+      { title: "Waves, and one failure", steps: 5, component: FailureSlide },
       { title: "Not every stop is a failure", steps: 5, component: OutcomesSlide },
+      { title: "The account already exists", steps: 5, component: ManualAccountSlide },
+      { title: "One person, two owners", steps: 6, component: DuplicateProfileSlide },
       { title: "Follow the run id", steps: 5, component: CorrelationSlide },
       { title: "Ask the Inngest MCP", steps: 4, component: McpSlide },
-      { title: "Gotchas", steps: 6, component: GotchasSlide },
       { title: "Checklist", steps: 1, component: ChecklistSlide },
     ],
   },

@@ -1,7 +1,7 @@
 import { ArrowDown, Bug, Database, FileText, Zap } from "lucide-react";
 import type { ReactNode } from "react";
 import { Caption, Reveal, SlideTitle } from "../ui";
-import { Card, Code, FUNCTION_ID, Label, RUN_ID, TEXT, type Tone } from "./parts";
+import { Card, Code, Label, RUN_ID, TEXT, type Tone } from "./parts";
 
 interface Place {
   icon: ReactNode;
@@ -15,13 +15,13 @@ const PLACES: Place[] = [
   {
     icon: <Database className="size-6" />,
     tone: "emerald",
-    name: "Account row",
+    name: "IntegrationAccount",
     search: (
       <>
-        admin filter <Code>has error</Code> → copy <Code>last_run_id</Code>
+        admin, filter <Code>Has error</Code> → copy <Code>last_workflow_run_id</Code>
       </>
     ),
-    shows: "Current state and the last error, per integration.",
+    shows: "State and last error per integration. History tab: every change.",
   },
   {
     icon: <Zap className="size-6" />,
@@ -43,7 +43,7 @@ const PLACES: Place[] = [
         <Code>inngest.run.id:{RUN_ID}</Code>
       </>
     ),
-    shows: `Stack trace. Performance: transaction inngest/${FUNCTION_ID}.`,
+    shows: "Stack trace. Sent on the last attempt only, or from a logged exception.",
   },
   {
     icon: <FileText className="size-6" />,
@@ -51,7 +51,7 @@ const PLACES: Place[] = [
     name: "Logs",
     search: (
       <>
-        <Code>run_id</Code> or <Code>user_id</Code> in Sentry Logs / CloudWatch
+        <Code>run_id</Code>, <Code>user_id</Code> · Sentry Logs, CloudWatch
       </>
     ),
     shows: "Every log line inside the run carries both ids.",
@@ -61,13 +61,13 @@ const PLACES: Place[] = [
 export function CorrelationSlide({ step }: { step: number }) {
   return (
     <>
-      <SlideTitle kicker="4 · Correlate">Follow the run id</SlideTitle>
+      <SlideTitle kicker="7 · Correlate">Follow the run id</SlideTitle>
 
-      <div className="absolute inset-x-20 top-[180px] flex flex-col">
+      <div className="absolute inset-x-20 top-[166px] flex flex-col">
         {PLACES.map((place, index) => (
           <Reveal key={place.name} show={step >= index}>
             {index > 0 && <ArrowDown className="mx-auto -my-1 size-5 text-zinc-600" />}
-            <Card tone={step === index ? place.tone : "neutral"} className="grid grid-cols-[230px_1fr_1fr] items-center gap-6 !py-3">
+            <Card tone={step === index ? place.tone : "neutral"} className="grid grid-cols-[230px_1.25fr_1fr] items-center gap-6 !py-3">
               <div className={`flex items-center gap-3 text-xl font-semibold ${TEXT[place.tone]}`}>
                 {place.icon}
                 {place.name}
